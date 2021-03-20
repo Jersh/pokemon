@@ -70,6 +70,12 @@ public static class Totodile {
         Console.WriteLine("0x{0:x4}", dvs);
         gb.Dispose();
     }
+// The hackiest hack you'll ever see but I'm still learning and I just couldnt figure it out
+//Allows for the eval coutner to be incremented
+    static class Butter
+    {
+        public static int counter;
+    }
 
     public static void EvaluateTototdile(Gold gb, DFState<GscTile> state) {
         GscPokemon toto = Textboxes(gb);
@@ -79,7 +85,7 @@ public static class Totodile {
         int spc = toto.DVs.Special;
 
         int stars = 0;
-
+        Console.WriteLine($"Evaluating: {Butter.counter}");
         if(atk == 15) stars += 2;
         else if(atk >= 12) stars++;
         else if(atk <= 7) stars -= 3;
@@ -104,6 +110,7 @@ public static class Totodile {
         else if(spc <= 11) stars--;
 
         string starsStr;
+        Butter.counter++;
         if(stars == 8) {
             starsStr = "[***]";
         } else if(stars >= 6) {
@@ -114,7 +121,9 @@ public static class Totodile {
             starsStr = "[   ]";
         }
 
+        Console.WriteLine(starsStr);
         if(stars >= 8) {
+            Console.WriteLine("Logging");
             lock(Writer) {
                 Writer.WriteLine("{0} [{1} cost] {2}- {3:x4}", starsStr, state.WastedFrames, state.Log, toto.DVs);
                 Writer.Flush();
@@ -123,6 +132,7 @@ public static class Totodile {
     }
 
     public static void StartSearch(int numThreads) {
+        Console.WriteLine("Starting Search!");
         bool[] threadsRunning = new bool[numThreads];
         Thread[] threads = new Thread[numThreads];
         Gold dummyGb = new Gold(true);
@@ -141,6 +151,7 @@ public static class Totodile {
         map[7, 5].RemoveEdge(0, Action.Right | Action.A);
         map[4, 2].RemoveEdge(0, Action.Down | Action.A);
         map[5, 3].RemoveEdge(0, Action.Down | Action.A);
+        Console.WriteLine("Walking");
 
         map[7, 5].AddEdge(0, new Edge<GscTile>() {
             Action = Action.Up,
@@ -180,6 +191,7 @@ public static class Totodile {
                                                 MakeSave(state.tile.X, state.tile.Y, state.hour, state.minute, state.momStep, state.audio, state.frameType, state.menuAccount, state.igt);
                                                 gb = new Gold(true);
                                                 gb.SetTimeSec(120);
+                                                gb.Show();
                                                 gb.Hold(Joypad.Left, 0x100);
                                             }
                                             GscStrat.GfSkip.Execute(gb);
@@ -191,11 +203,15 @@ public static class Totodile {
                                                 for(int fsBack = 0; fsBack <= 3; fsBack++) {
                                                     gb.Hold(Joypad.Left, "GetJoypad");
                                                     gb.AdvanceFrame(Joypad.Left);
+                                                    Console.WriteLine("One");
+                                                    
                                                     byte[] delayState = gb.SaveState();
                                                     for(int delay = 0; delay <= MaxCost; delay++) {
                                                         int introCost = mmBack * 83 + fsBack * 101 + delay;
                                                         if(introCost > MaxCost) break;
                                                         gb.Hold(Joypad.A, "OWPlayerInput");
+                                                        Console.WriteLine("Soemthing...");
+                                                        
                                                         DFParameters<Gold, GscTile> parameters = new DFParameters<Gold, GscTile>() {
                                                             NoEncounterSS = 1,
                                                             PruneAlreadySeenStates = false,
@@ -205,11 +221,13 @@ public static class Totodile {
                                                             EndTiles = new GscTile[] { map[7, 4] },
                                                             EndEdgeSet = 1,
                                                             FoundCallback = state => EvaluateTototdile(gb, state),
+ //                                                           System.Console.WriteLine("Logging to Text File"),
                                                         };
                                                         DepthFirstSearch.StartSearch(new Gold[] { gb }, parameters, tile, 0, new byte[][] { gb.SaveState() });
                                                         gb.LoadState(delayState);
                                                         gb.AdvanceFrame(Joypad.Left);
                                                         delayState = gb.SaveState();
+                                                        Console.WriteLine("Depth First Search");
                                                     }
                                                     gb.LoadState(fsbackState);
                                                     GscStrat.FsBack.Execute(gb);
