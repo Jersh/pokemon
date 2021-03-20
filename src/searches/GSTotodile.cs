@@ -191,6 +191,7 @@ public static class Totodile {
                                                 MakeSave(state.tile.X, state.tile.Y, state.hour, state.minute, state.momStep, state.audio, state.frameType, state.menuAccount, state.igt);
                                                 gb = new Gold(true);
                                                 gb.SetTimeSec(120);
+// Uncomment the next line to enable the GBC display
                                               //  gb.Show();
                                                 gb.Hold(Joypad.Left, 0x100);
                                             }
