@@ -111,7 +111,7 @@ public static class Totodile {
 
         string starsStr;
         Butter.counter++;
-        if(stars == 8) {
+        if(stars >= 8) {
             starsStr = "[***]";
         } else if(stars >= 6) {
             starsStr = "[ **]";
@@ -191,7 +191,7 @@ public static class Totodile {
                                                 MakeSave(state.tile.X, state.tile.Y, state.hour, state.minute, state.momStep, state.audio, state.frameType, state.menuAccount, state.igt);
                                                 gb = new Gold(true);
                                                 gb.SetTimeSec(120);
-                                                gb.Show();
+                                              //  gb.Show();
                                                 gb.Hold(Joypad.Left, 0x100);
                                             }
                                             GscStrat.GfSkip.Execute(gb);
