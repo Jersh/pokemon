@@ -169,7 +169,15 @@ public static class Totodile {
 
         Writer = new StreamWriter("gold_toto_" + DateTime.Now.Ticks + ".txt");
         int numSaves = startTiles.Length * startHours.Length * startMinutes.Length * 2 * 2 * 8 * 2 * 10;
+
+// The above creates the log files, currently isnt being written too?
+
         Console.WriteLine(numThreads + " threads, " + (numSaves) + " saves (" + (float) numSaves / (float) numThreads + " iterations)");
+        Console.WriteLine($"{numThreads}  threads, + {numSaves}");
+//       Console.WriteLine($"Evaluating: {Butter.counter}");
+
+// From Original but doesnt output to console??
+
         foreach(GscTile tile in startTiles) {
             foreach(byte hour in startHours) {
                 foreach(byte minute in startMinutes) {

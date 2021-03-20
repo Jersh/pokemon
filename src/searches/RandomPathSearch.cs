@@ -106,4 +106,9 @@ public static class RandomPathSearch {
 
         return path;
     }
+
+    internal static void StartSearch(int v)
+    {
+        throw new NotImplementedException();
+    }
 }
