@@ -1,6 +1,8 @@
 # Pokemon
 
 A work-in-progress project of botting/datamining tools for the generation 1 and 2 games of the Pokemon series.
+Forked from stringflow/pokemom
+Being used purely as an excersize for me to learn some C#
 
 
 # Build Instructions (64-bit only for now)
